@@ -8,7 +8,6 @@ st.set_page_config(layout="wide")
 st.title("Data Preparation")
 st.header("This page is used to load and prep the data.")
 
-
 df_path = st.sidebar.file_uploader("Upload the plot data file:", type=["csv"])
 ldg_path = st.sidebar.file_uploader("Upload the loadings data file:", type=["csv"])
 expl_var_path = st.sidebar.file_uploader(
