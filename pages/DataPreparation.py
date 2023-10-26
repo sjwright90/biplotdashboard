@@ -15,12 +15,14 @@ expl_var_path = st.sidebar.file_uploader(
 )
 
 if all([df_path, ldg_path, expl_var_path]):
-    df, ldg, expl_var, lthorder = open_clean_file(
+    pairings, namemap, df, ldg, expl_var, lthorder = open_clean_file(
         plot_df_file=df_path,  # type: ignore
         pca_ldg_df_file=ldg_path,  # type: ignore
         expl_var_file=expl_var_path,  # type: ignore
     )
 
+    st.session_state.pairings = pairings
+    st.session_state.namemap = namemap
     st.session_state.df = df
     st.session_state.ldg = ldg
     st.session_state.expl_var = expl_var

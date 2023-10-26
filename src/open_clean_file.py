@@ -3,9 +3,12 @@ from pathlib import Path
 import streamlit as st
 from clrutils import Lith_order
 from itertools import combinations
+from src import pairings, namemap
 
 
 def open_clean_file(
+    pairings=pairings,
+    namemap=namemap,
     plot_df_file="pcadata.csv",
     pca_ldg_df_file="pcadata_ldg.csv",
     expl_var_file="expl_var.csv",
@@ -60,6 +63,18 @@ def open_clean_file(
     if not all([col in plot_df.columns.to_list() for col in expectedcols]):
         st.write("Warning: Columns do not match expected columns. Please try again.")
         st.stop()
+    with st.form(key="addcol"):
+        addcol = st.multiselect(
+            "Add columns to plot",
+            [col for col in plot_df.columns if col not in expectedcols],
+        )
+        submit_button_col = st.form_submit_button(label="Submit")
+    if submit_button_col:
+        for col in addcol:
+            expectedcols.append(col)
+            pairings.append(col)
+            namemap[col] = col
+
     plot_df = plot_df.loc[:, expectedcols].copy()
     plotlithos = plot_df["lithology_relog"].unique()
     nonmatchinglithos = [lith for lith in plotlithos if lith not in lithorder]
@@ -159,4 +174,4 @@ def open_clean_file(
             st.stop()
     expl_var_out = expl_var.values.flatten().tolist()[:2]
 
-    return plot_df, pca_ldg_df, expl_var_out, lithorder
+    return pairings, namemap, plot_df, pca_ldg_df, expl_var_out, lithorder

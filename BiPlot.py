@@ -2,7 +2,9 @@
 import streamlit as st
 from clrutils.pca_plots import pca_plot
 import re
-from src import pairings, namemap
+
+# from src import pairings, namemap
+
 
 # %%
 st.set_page_config(layout="wide")
@@ -11,11 +13,15 @@ st.write("This page shows the PCA biplots of data.")
 
 if all(
     [
+        "pairings" in st.session_state,
+        "namemap" in st.session_state,
         "df" in st.session_state,
         "ldg" in st.session_state,
         "expl_var" in st.session_state,
     ]
 ):
+    pairings = st.session_state.pairings
+    namemap = st.session_state.namemap
     lithorder = st.session_state.lithorder
     df = st.session_state.df
     ldg = st.session_state.ldg
